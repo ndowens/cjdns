@@ -1,0 +1,5 @@
+#!/usr/bin/execlineb -P
+foreground { if -nt { test -f /etc/cjdroute.conf } exec sh -c "/usr/bin/cjdroute --genconf > /etc/cjdroute.conf" }
+foreground { ip -6 route add blackhole fc00::/8 metric 500 }
+exec "/usr/bin/cjdroute --nobg < /etc/cjdroute.conf"
+

@@ -1,0 +1,43 @@
+# Maintainer: ndowens <ndowens@artixlinux.org>
+pkgname=cjdns-s6
+pkgver=20200921
+pkgrel=1
+pkgdesc="s6 service scripts for cjdns"
+arch=('any')
+url="https://gitea.artixlinux.org/artixlinux/packages-s6"
+groups=('s6-galaxy')
+provides=('cjdns-runscripts')
+conflicts=('cjdns-runscripts')
+depends=('cjdns' 's6')
+source=("cjdns-log.conf"
+        "cjdns-log.consumer-for"
+        "cjdns-log.notification-fd"
+        "cjdns-log.pipeline-name"
+        "cjdns-log.run"
+        "cjdns-log.type"
+        "cjdns-srv.producer-for"
+        "cjdns-srv.run"
+        "cjdns-srv.type")
+sha256sums=('8a3d2abcc40d355ca913f39871d24f6c770dd216fe075d2548e729b2ae952135'
+            '311ea5a1f43dc90aafb40cd931850aec3a73c9632881090e7dc8e82ef518a947'
+            '1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2'
+            'fc74e14f38f7a1c28bb02189b51a2f9a79d8a270624829caac8696629bb7d141'
+            'e8439f00e878b9dc3708a0a561d5454abffd5b2ffd477368574b63dabd4d3280'
+            'd0001a150b83f68f09004c5059045cb76a3f064eed4d42ce072bc3722c118006'
+            '34cac849fc614a30fbc4d75d20fe48aa31dac3bf113635f64e419ac9541b7a0a'
+            '59946b24cd82b0c7ad15d9bc1d607b9c1d2017e9fe14f1aeca16a37b811114b0'
+            'd0001a150b83f68f09004c5059045cb76a3f064eed4d42ce072bc3722c118006')
+
+_inst_sv() {
+    for file in conf consumer-for notification-fd \
+        pipeline-name producer-for run type; do
+        if test -f "$srcdir/$1.$file"; then
+            install -Dm644 "$srcdir/$1.$file" "$pkgdir/etc/s6/sv/$1/$file"
+        fi
+    done
+}
+
+package() {
+    _inst_sv 'cjdns-log'
+    _inst_sv 'cjdns-srv'
+}

@@ -1,0 +1,5 @@
+#!/usr/bin/execlineb -P
+envfile /etc/s6/sv/cjdns-log/conf
+importas -iu DIRECTIVES DIRECTIVES
+foreground { if -n -t { test -d /var/log/cjdns } install -d -m 0755 -o s6log -g s6log /var/log/cjdns }
+s6-setuidgid s6log exec -c sh -c "s6-log -d3 -b ${DIRECTIVES} /var/log/cjdns"
